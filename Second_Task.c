@@ -3,7 +3,7 @@
 #include <string.h>
 #include <locale.h>
 
-#define MAX_INPUT 101
+#define MAX_INPUT 256
 
 typedef struct Node {
     char* word;
