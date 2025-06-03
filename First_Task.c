@@ -31,20 +31,20 @@ int main(){
     Node* L1 = NULL;
     Node* L2 = NULL;
 
-    Generate_Polynomial(&L1, 6);
+    Generate_Polynomial(&L1, 5);
     Generate_Polynomial(&L2, 4);
 
 
-    printf("Многочлен L1: ");
+    printf("Polynomial L1: ");
     Print_Poly(L1);
 
-    printf("Многочлен L2: ");
+    printf("Polynomial L2: ");
     Print_Poly(L2);
 
 
     Node* L = Create_Poly(L1, L2);
 
-    printf("Многочлен L: ");
+    printf("Polynomial L: ");
     Print_Poly(L);
     
 
@@ -204,10 +204,10 @@ void Generate_Polynomial(Node** poly, int max_degree) {
     for (int i = max_degree; i >= 0; i--) {
         int coeff;
         do {
-            coeff = rand() % 301 - 125; 
-        } while (used[coeff + 100]);   
+            coeff = rand() % 301 - 150; 
+        } while (used[coeff + 150]);   
 
-        used[coeff + 100] = 1;         
+        used[coeff + 150] = 1;         
         Add_Node(poly, coeff, i);
     }
 }

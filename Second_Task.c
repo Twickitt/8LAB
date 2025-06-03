@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 
 #define MAX_INPUT 101
 
@@ -22,10 +23,12 @@ void free_list(Node* head);
 
 int main() {
 
+    setlocale(LC_ALL, "ru");
+
     char input[MAX_INPUT];
     Node *head = NULL, *tail = NULL;
 
-    printf("Введите строку (не более 100 символов, в конце точка):\n");
+    printf("Enter your string(less than 100 simbols, dot at the end of the string):\n");
     fgets(input, MAX_INPUT, stdin);
 
     input[strcspn(input, "\n")] = '\0'; 
@@ -43,16 +46,16 @@ int main() {
         word = strtok(NULL, " ");
     }
 
-    printf("\nСписок до удаления:\n");
+    printf("\nYour string before changes:\n");
     print_list(head);
 
     int L;
-    printf("\nВведите длину слов для удаления: ");
+    printf("\nEnter the length of the word to be removed: ");
     scanf("%d", &L);
 
     delete_by_length(&head, &tail, L);
 
-    printf("\nСписок после удаления:\n");
+    printf("\nYour string after changes:\n");
     print_list(head);
 
     free_list(head);
