@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <wchar.h>
-#include <wctype.h>
 #include <locale.h>
 
 #define MAX_INPUT 101
@@ -22,6 +20,8 @@ void print_list(Node* head);
 void delete_by_length(Node** head, Node** tail, int len);
 
 void free_list(Node* head);
+
+int UTF8_Strlen(const char* S);
 
 int main() {
 
@@ -106,7 +106,7 @@ void delete_by_length(Node** head, Node** tail, int len) {
     Node* cur = *head;
     while (cur) {
         Node* next = cur->next;
-        if (strlen(cur->word) == len) {
+        if (UTF8_Strlen(cur->word) == len) {
             if (cur->prev) 
                 cur->prev->next = cur->next;
             else 
@@ -132,4 +132,17 @@ void free_list(Node* head) {
         free(tmp->word);
         free(tmp);
     }
+}
+
+//Данную функцию я позаимствовал у чата, т.к. не понравилось, что strlen() работает с байтами, а такой подход не работает для других языков, например, для русского, из-за кодировки UTF-8(1 символ может занимать больше 1 байта) 
+int UTF8_Strlen(const char* S){
+    int len = 0;
+    while(*S){
+        unsigned char c = (unsigned char)*S;
+        if((c & 0xC0) != 0x80) 
+            len ++;
+        S++;
+    }
+
+    return len;
 }
