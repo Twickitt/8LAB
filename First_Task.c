@@ -9,6 +9,55 @@ typedef struct Node {
 } Node;
 
 
+Node* Create_New_Node(int coeff, int degree);
+
+
+void Add_Node(Node** polynomy, int coeff, int degree);
+
+
+void Print_Poly(Node* polynomy);
+
+void Free_Poly(Node* polynomy);
+
+Node* Create_Poly(Node* L1, Node* L2);
+
+
+void Generate_Polynomial(Node** poly, int max_degree);
+
+
+
+int main(){
+
+    Node* L1 = NULL;
+    Node* L2 = NULL;
+
+    Generate_Polynomial(&L1, 6);
+    Generate_Polynomial(&L2, 4);
+
+
+    printf("Многочлен L1: ");
+    Print_Poly(L1);
+
+    printf("Многочлен L2: ");
+    Print_Poly(L2);
+
+
+    Node* L = Create_Poly(L1, L2);
+
+    printf("Многочлен L: ");
+    Print_Poly(L);
+    
+
+    Free_Poly(L1);
+    Free_Poly(L2);
+
+
+    return 0;
+}
+
+
+
+
 Node* Create_New_Node(int coeff, int degree) {
     Node* new_node = (Node*)malloc(sizeof(Node));
     new_node -> coeff = coeff;
@@ -18,7 +67,7 @@ Node* Create_New_Node(int coeff, int degree) {
 }
 
 
-//Записываем по порядку члены разных степеней в многочлен 
+
 void Add_Node(Node** polynomy, int coeff, int degree) {
     if (coeff == 0) 
     return;
@@ -112,6 +161,7 @@ void Print_Poly(Node* polynomy) {
     printf("\n");
 }
 
+
 void Free_Poly(Node* polynomy){
     while(polynomy){
 
@@ -122,9 +172,10 @@ void Free_Poly(Node* polynomy){
     }
 }
 
+
 Node* Create_Poly(Node* L1, Node* L2){
 
-    int max_deg_L2 = -1;
+    int max_deg_L2; 
     Node* curr = L2;
     while(curr){
         if(curr -> degree > max_deg_L2)
@@ -148,72 +199,15 @@ Node* Create_Poly(Node* L1, Node* L2){
 
 
 void Generate_Polynomial(Node** poly, int max_degree) {
-
-    int digits[301] = {0};
+    int used[301] = {0};  
 
     for (int i = max_degree; i >= 0; i--) {
-        int coeff; 
-        do{
+        int coeff;
+        do {
+            coeff = rand() % 301 - 125; 
+        } while (used[coeff + 100]);   
 
-            coeff = rand() % 301 - 150; 
-
-        }while (digits[coeff + 150] || coeff == 0);
-
-        digits[coeff + 150] = 1;
-
-        int deg = rand() % (max_degree + 1);
-
+        used[coeff + 100] = 1;         
         Add_Node(poly, coeff, i);
     }
-}
-
-
-
-int main(){
-
-    Node* L1 = NULL;
-    Node* L2 = NULL;
-
-    Generate_Polynomial(&L1, 4);
-    Generate_Polynomial(&L2, 3);
-
-
-    // Пример: L1 = -5x^2 + x^3 + x - 3x^5
-    // Add_Node(&L1, 12, 3);
-    // Add_Node(&L1, -3, 33);
-    // Add_Node(&L1, -1, -6);
-    // Add_Node(&L1, -1, -34);
-
-    // Add_Node(&L1, 0, 3);
-    // Add_Node(&L1, 0, 33);
-    // Add_Node(&L1, 0, -6);
-    // Add_Node(&L1, 1, -34);
-
-    // Пример: L2 = 2x^2 - 4x + 7
-    // Add_Node(&L2, 2, 2);
-    // Add_Node(&L2, -4, 1);
-    // Add_Node(&L2, 7, 0);
-
-    printf("Многочлен L1: ");
-    Print_Poly(L1);
-
-    printf("Многочлен L2: ");
-    Print_Poly(L2);
-
-
-    Node* L = Create_Poly(L1, L2);
-
-    printf("Многочлен L: ");
-    Print_Poly(L);
-    
-
-    // Освобождение памяти
-    Free_Poly(L1);
-    Free_Poly(L2);
-
-
-    return 0;
-
-
-
 }
